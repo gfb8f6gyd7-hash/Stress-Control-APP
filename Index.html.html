@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D9%BE%D8%B1%D9%88%D8%AA%DA%A9%D9%84%20%DB%B1%DB%B0%20%D8%AF%D9%82%DB%8C%D9%82%D9%87%E2%80%8C%D8%A7%DB%8C%20%D8%A2%D8%B1%D8%A7%D9%85%E2%80%8C%D8%B3%D8%A7%D8%B2%DB%8C%20%D9%81%D9%88%D8%B1%DB%8C%22%2C%22short_name%22%3A%22%D8%A2%D8%B1%D8%A7%D9%85%D8%B4%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1220%22%2C%22theme_color%22%3A%22%230b1220%22%7D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="آرامش">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>پروتکل ۱۰ دقیقه‌ای آرام‌سازی فوری</title>
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--text:#f4f7fb;--muted:#aeb9ca;--accent:#62d9c5;--accent2:#7ea7ff;--danger:#ff7b7b}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(160deg,#0b1220,#111c31);color:var(--text);font-family:"Vazirmatn",-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif;min-height:100vh}
+main{width:min(680px,100%);margin:auto;padding:20px 16px 32px}
+header{text-align:center;margin:10px 0 18px} h1{font-size:23px;margin:0 0 7px} .sub{color:var(--muted);font-size:14px}
+.card{background:rgba(18,28,46,.96);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:20px;box-shadow:0 14px 40px rgba(0,0,0,.25)}
+.status{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:13px;margin-bottom:12px}
+.stage{font-size:21px;font-weight:800;margin:6px 0 12px}.timer{font-variant-numeric:tabular-nums;font-size:64px;line-height:1;text-align:center;font-weight:800;letter-spacing:1px;margin:12px 0}
+.progress{height:8px;background:#26344b;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:var(--accent);transition:width .25s linear}
+.label{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
+.content{min-height:220px;margin-top:20px;text-align:center}.primary{font-size:25px;font-weight:800;line-height:1.65;margin:15px 0}.guide{font-size:18px;line-height:1.9;color:#dbe3ef}.small{font-size:15px;line-height:1.9;color:var(--muted)}
+ul{padding:0 24px;text-align:right;line-height:2.1}.quote{margin-top:22px;padding:14px;border-radius:16px;background:#18263d;font-weight:700}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.controls button,.start{min-height:54px;border:0;border-radius:16px;font-size:17px;font-weight:800;color:var(--text);background:#26344b;touch-action:manipulation}.start{width:100%;background:var(--accent);color:#071b18;margin-top:14px;font-size:19px}.restart{grid-column:1/-1;background:#34445f!important}
+.breath{width:145px;height:145px;border-radius:50%;margin:20px auto 12px;background:rgba(98,217,197,.15);border:3px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;transition:transform 4s ease-in-out,box-shadow 4s ease}
+.breath.inhale{transform:scale(1.22);box-shadow:0 0 45px rgba(98,217,197,.25)} .breath.exhale{transform:scale(.82)}
+.hidden{display:none}.done{font-size:27px;font-weight:900;margin-top:30px}.safety{font-size:12px;color:#8996aa;text-align:center;margin-top:14px;line-height:1.7}
+@media(max-width:390px){.timer{font-size:54px}.primary{font-size:22px}.stage{font-size:19px}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>پروتکل ۱۰ دقیقه‌ای آرام‌سازی فوری</h1><div class="sub">برای وقتی که یک محرک ناگهانی باعث ضعف، تپش قلب یا سناریوسازی ذهنی می‌شود.</div></header>
+<section class="card">
+<div class="status"><span id="elapsed">سپری‌شده: ۰۰:۰۰</span><span id="remaining">باقی‌مانده: ۱۰:۰۰</span></div>
+<div class="stage" id="stage">آماده شروع</div>
+<div class="timer" id="timer">۱۰:۰۰</div>
+<div class="progress"><div class="bar" id="bar"></div></div><div class="label" id="stageRemain">برای شروع آماده‌ای</div>
+<div class="content" id="content">
+<div class="primary">وقتی آماده‌ای، «شروع پروتکل» را بزن.</div>
+<div class="guide">هدف: ابتدا بدن را آرام‌تر کنیم، سپس از چرخه سناریوسازی فاصله بگیریم.</div>
+</div>
+<button class="start" id="start">شروع پروتکل</button>
+<div class="controls hidden" id="controls">
+<button id="pause">مکث</button><button id="resume" disabled>ادامه</button><button class="restart" id="restart">شروع مجدد</button>
+</div>
+</section>
+<div class="safety">این ابزار جایگزین ارزیابی پزشکی نیست. اگر درد قفسه سینه، تنگی نفس شدید، غش، یا علائم شدید و غیرمعمول دارید، کمک پزشکی دریافت کنید.</div>
+</main>
+<script>
+const stages=[
+ {start:0,end:60,title:"۰:۰۰ تا ۱:۰۰ — توقف",html:`<div class="primary">«فعلاً هیچ تصمیمی نگیر.»</div><div class="guide">«بدنم به یک محرک ناگهانی واکنش نشان داده؛ این احساس خطر است، نه الزاماً وجود خطر.»</div>`},
+ {start:60,end:180,title:"۱:۰۰ تا ۳:۰۰ — تنفس آرام",breath:true,html:`<div class="guide">آرام از بینی نفس بکش.</div><div class="small">دم: ۴ ثانیه &nbsp; • &nbsp; بازدم: ۶ ثانیه<br>بدون حبس نفس و بدون نفس‌های خیلی عمیق و پشت‌سرهم</div><div class="breath inhale" id="breath">دم</div>`},
+ {start:180,end:240,title:"۳:۰۰ تا ۴:۰۰ — برگشت به محیط",html:`<div class="guide">توجهت را از علائم بدن به محیط برگردان.</div><ul><li>۳ چیز که می‌بینی 👁️</li><li>۲ صدا که می‌شنوی 👂</li><li>۱ چیز که لمس می‌کنی ✋</li></ul>`},
+ {start:240,end:300,title:"۴:۰۰ تا ۵:۰۰ — واقعیت یا سناریو؟",html:`<div class="guide">چه چیزی را واقعاً می‌دانم؟</div><div class="guide">چه چیزی را هنوز نمی‌دانم؟</div><div class="guide">ذهنم الان چه چیزی را پیش‌بینی می‌کند؟</div><div class="quote">پیش‌بینی ذهن = اطلاعات نیست.</div>`},
+ {start:300,end:420,title:"۵:۰۰ تا ۷:۰۰ — آب / خوراکی",html:`<div class="guide">اگر چند ساعت چیزی نخورده‌ای یا گرسنه‌ای، یک میان‌وعده کوچک بخور و چند جرعه آب بنوش.</div><ul><li>موز + چند بادام/گردو</li><li>نان + پنیر + گردو</li><li>ماست + موز</li><li>۱–۲ خرما + چند عدد مغز</li><li>شیر + موز</li></ul><div class="quote">اگر تازه غذا خورده‌ای و گرسنه نیستی، لازم نیست برای رفع این حالت چیزی شیرین بخوری.</div>`},
+ {start:420,end:600,title:"۷:۰۰ تا ۱۰:۰۰ — قطع سناریوسازی",html:`<div class="primary">«فعلاً اطلاعات کافی ندارم؛ وقتی اطلاعات کامل شد تصمیم می‌گیرم.»</div><div class="guide">اگر ذهن شروع کرد به:<br>«اگر…؟» «نکند…؟» «اگر بدتر شود…؟»</div><div class="small">با ذهن وارد بحث نشو. فقط متوجه شو که این سناریوسازی است.</div><div class="quote">فقط یک اقدام واقعی مشخص کن؛ نه ده سناریو.</div>`}
+];
+
+let elapsed=0,running=false,paused=false,startedAt=0,pausedAt=0,raf=null;
+let stageIndex=-1, breathPhase="inhale", breathStartedAt=0;
+
+const $=id=>document.getElementById(id);
+const pad=n=>String(n).padStart(2,"0");
+function faTime(sec){
+  sec=Math.max(0,Math.ceil(sec));
+  return pad(Math.floor(sec/60))+":"+pad(sec%60);
+}
+
+function renderStage(i){
+  stageIndex=i;
+  $("stage").textContent=stages[i].title;
+  $("content").innerHTML=stages[i].html;
+  if(stages[i].breath){
+    breathPhase="inhale";
+    breathStartedAt=performance.now();
+    setBreath("inhale");
+  }
+}
+
+function setBreath(p){
+  breathPhase=p;
+  const b=$("breath");
+  if(!b)return;
+  b.textContent=p==="inhale"?"دم":"بازدم";
+  b.className="breath "+p;
+}
+
+function updateUI(now){
+  $("elapsed").textContent="سپری‌شده: "+faTime(elapsed);
+  $("remaining").textContent="باقی‌مانده: "+faTime(600-elapsed);
+  $("timer").textContent=faTime(600-elapsed);
+
+  if(elapsed>=600){ finish(); return; }
+
+  const i=stages.findIndex(s=>elapsed>=s.start && elapsed<s.end);
+  if(i<0)return;
+
+  if(i!==stageIndex) renderStage(i);
+
+  const left=stages[i].end-elapsed;
+  $("stageRemain").textContent="باقی‌مانده این مرحله: "+faTime(left);
+  $("bar").style.width=Math.min(100,elapsed/600*100)+"%";
+
+  if(stages[i].breath){
+    const phaseDuration=breathPhase==="inhale"?4000:6000;
+    if(now-breathStartedAt>=phaseDuration){
+      breathPhase=breathPhase==="inhale"?"exhale":"inhale";
+      breathStartedAt=now;
+      setBreath(breathPhase);
+    }
+  }
+}
+
+function tick(now){
+  if(!running || paused)return;
+
+  elapsed=(now-startedAt)/1000;
+  updateUI(now);
+
+  if(running) raf=requestAnimationFrame(tick);
+}
+
+function start(){
+  cancelAnimationFrame(raf);
+  elapsed=0;
+  running=true;
+  paused=false;
+  stageIndex=-1;
+  startedAt=performance.now();
+
+  $("start").classList.add("hidden");
+  $("controls").classList.remove("hidden");
+  $("pause").disabled=false;
+  $("resume").disabled=true;
+
+  updateUI(startedAt);
+  raf=requestAnimationFrame(tick);
+}
+
+function pause(){
+  if(!running || paused)return;
+  paused=true;
+  pausedAt=performance.now();
+  cancelAnimationFrame(raf);
+  $("pause").disabled=true;
+  $("resume").disabled=false;
+}
+
+function resume(){
+  if(!running || !paused)return;
+
+  const now=performance.now();
+  startedAt += now-pausedAt;
+  paused=false;
+
+  $("pause").disabled=false;
+  $("resume").disabled=true;
+
+  raf=requestAnimationFrame(tick);
+}
+
+function finish(){
+  running=false;
+  paused=false;
+  cancelAnimationFrame(raf);
+  elapsed=600;
+
+  $("elapsed").textContent="سپری‌شده: ۱۰:۰۰";
+  $("remaining").textContent="باقی‌مانده: ۰۰:۰۰";
+  $("timer").textContent="۰۰:۰۰";
+  $("stage").textContent="پروتکل تمام شد";
+  $("stageRemain").textContent="۱۰ دقیقه کامل شد";
+  $("bar").style.width="100%";
+
+  $("content").innerHTML=`<div class="done">پروتکل تمام شد.</div>
+  <div class="guide" style="margin-top:18px">بدن آرام‌تر شده است. حالا اگر لازم است، با اطلاعات واقعی تصمیم بگیر؛ نه با سناریوی ذهن.</div>`;
+
+  $("pause").disabled=true;
+  $("resume").disabled=true;
+}
+
+$("start").onclick=start;
+$("pause").onclick=pause;
+$("resume").onclick=resume;
+$("restart").onclick=start;
+</script>
+</body>
+</html>
